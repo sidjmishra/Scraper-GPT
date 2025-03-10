@@ -41,8 +41,10 @@ async def scrape_website(start_url, max_pages=5):
 
             # Extract meaningful text
             elements = soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "p", "li"])
-            text = "\n".join(element.get_text(strip=True) for element in elements)
-            extracted_texts.append(text)
+            page_text = "\n".join(element.get_text(strip=True) for element in elements)
+
+            if page_text.strip():  # Ensure it's not empty
+                extracted_texts.append(f"=== Page Content ===\n{page_text}\n")
 
             visited_urls.add(url)
 
@@ -57,10 +59,18 @@ async def scrape_website(start_url, max_pages=5):
 
         await browser.close()
 
-    return "\n".join(extracted_texts) if extracted_texts else "No relevant content found."
+    if extracted_texts:
+        with open("scraped_content.txt", "w", encoding="utf-8") as file:
+            file.write("\n\n".join(extracted_texts))
 
-# # Example usage
+        print(f"Scraped content saved to scraped_content.txt")
+        return "\n\n".join(extracted_texts)
+    else:
+        print("No relevant content found.")
+        return None
+
+# Example usage
 # if __name__ == "__main__":
-#     url = "https://example.com"  # Replace with your target website
+#     url = "https://arya.ai"  # Replace with your target website
 #     scraped_content = asyncio.run(scrape_website(url, max_pages=10))
 #     print(scraped_content)
