@@ -8,7 +8,6 @@ def process_text_file(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         raw_text = file.read()
 
-    # Split text based on separators (each `=` line marks a new entry)
     scraped_texts = [text.strip() for text in raw_text.split("=== Page Content ===") if text.strip()]
     
     store.add_scraped_data(scraped_texts)

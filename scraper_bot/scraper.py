@@ -3,14 +3,14 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
-EXCLUDED_PATHS = ["login", "signup", "register", "signin"]  # URLs to avoid
+EXCLUDED_PATHS = ["login", "signup", "register", "signin"]
 
 async def fetch_page_content(browser, url):
     """Fetch page content using Playwright (JavaScript rendering)."""
     try:
         page = await browser.new_page()
-        await page.goto(url, timeout=10000)  # Wait for JavaScript content
-        await asyncio.sleep(2)  # Allow JS to load
+        await page.goto(url, timeout=10000)
+        await asyncio.sleep(2)
         content = await page.content()
         await page.close()
         return content
@@ -30,7 +30,7 @@ async def scrape_website(start_url, max_pages=5):
         while pages_to_crawl and len(visited_urls) < max_pages:
             url = pages_to_crawl.pop(0)
             if url in visited_urls or any(excl in url for excl in EXCLUDED_PATHS):
-                continue  # Skip already visited or excluded paths
+                continue
             
             print(f"Scraping: {url}")
             html = await fetch_page_content(browser, url)
@@ -39,11 +39,10 @@ async def scrape_website(start_url, max_pages=5):
             
             soup = BeautifulSoup(html, "html.parser")
 
-            # Extract meaningful text
             elements = soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "p", "li"])
             page_text = "\n".join(element.get_text(strip=True) for element in elements)
 
-            if page_text.strip():  # Ensure it's not empty
+            if page_text.strip():
                 extracted_texts.append(f"=== Page Content ===\n{page_text}\n")
 
             visited_urls.add(url)

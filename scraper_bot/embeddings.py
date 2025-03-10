@@ -76,7 +76,6 @@ def ask_llama(query, context_text):
 #     store.add_scraped_data(scraped_texts)
 #     return store
 
-# Example usage
 # if __name__ == "__main__":
 #     file_path = "scraped_content.txt"
 #     embedding_store = process_text_file(file_path)
