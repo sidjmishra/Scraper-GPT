@@ -65,14 +65,22 @@ streamlit run scraper_bot/ui.py
 Here are some screenshots of the application in action:
 
 ### Website Input Page
-![Website Input](images/initial.png)
+<p align="center">
+  <img src="images/initial.png" alt="Website Input" style="border: 2px solid #000;" />
+</p>
 
 ### Loading State
-![Loading](images/scrapping.png)
+<p align="center">
+  <img src="images/scrapping.png" alt="Loading" style="border: 2px solid #000;" />
+</p>
 
 ### Chat Interface
-![Chat Interface](images/output1.png)
-![Chat Interface](images/output2.png)
+<p align="center">
+  <img src="images/output1.png" alt="Question 1" style="border: 2px solid #000;" />
+</p>
+<p align="center">
+  <img src="images/output2.png" alt="Question 2" style="border: 2px solid #000;" />
+</p>
 
 ## Known Issues & Limitations
 - May not handle dynamically loaded content fully if it requires user interaction.
