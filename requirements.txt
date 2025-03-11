@@ -6,3 +6,4 @@ faiss-cpu==1.10.0
 ollama==0.4.7
 fastapi==0.115.11
 uvicorn==0.34.0
+fpdf==1.7.2
