@@ -8,8 +8,11 @@ from embeddings import EmbeddingStore, ask_llama
 txt_file = "scraped_content.txt"
 api_url = "http://127.0.0.1:8000"
 
-st.set_page_config(page_title="Web Info Chatbot", page_icon="🤖")
-st.title("Scraper Bot")
+st.set_page_config(page_title="Researcher's Chatbot", page_icon="🤖")
+st.title("Researcher's Chatbot")
+
+if "history" not in st.session_state:
+    st.session_state.history = []
 
 # Initialize session state if not already set
 if "state" not in st.session_state:
@@ -28,18 +31,25 @@ def reset_application():
 
 # Function to generate PDF report
 def generate_pdf():
+    if not st.session_state.history:
+        st.warning("No conversation history available.")
+        return
+    print(st.session_state.history)
+
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
-    pdf.set_font("Arial", style='', size=12)
+    pdf.add_font("DejaVu", "", "scraper_bot/DejaVuSans.ttf", uni=True)
+    pdf.add_font("DejaVu", "B", "scraper_bot/DejaVuSans-Bold.ttf", uni=True)
 
+    pdf.set_font("DejaVu", "B", 14)
     pdf.cell(200, 10, "User & Application Interaction Report", ln=True, align='C')
     pdf.ln(10)
 
     for entry in st.session_state.history:
-        pdf.set_font("Arial", style='B', size=12)
+        pdf.set_font("DejaVu", "B", 12)
         pdf.cell(0, 10, f"User Query: {entry['query']}", ln=True)
-        pdf.set_font("Arial", style='', size=12)
+        pdf.set_font("DejaVu", "", 12)
         pdf.multi_cell(0, 8, f"Response: {entry['response']}\n", align='L')
         pdf.ln(5)
 
@@ -49,7 +59,7 @@ def generate_pdf():
 
 # UI - Website Input
 with st.sidebar:
-    st.title("Web Info Chatbot")
+    st.title("Researcher's Chatbot")
     if st.session_state.state == "input":
         url = st.text_input("Enter Website URL:", "")
         if st.button("Submit") and url:
@@ -90,8 +100,6 @@ if st.session_state.state == "loading":
 
 # UI - Chat Interface
 if st.session_state.state == "chat":
-    st.title("Chat with the Website")
-
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Generate Report"):

@@ -1,3 +1,4 @@
 scraper_gpt/
 *.pyc
 *.pyo
+*pkl
